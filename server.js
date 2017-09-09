@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Database Config
-mongoose.connect("mongodb://localhost/test");
+mongoose.connect("mongodb://localhost/newsScraper");
 var db = mongoose.connection;
 
 db.on("error", function(err) {
@@ -30,22 +30,23 @@ db.once("open", function() {
 	console.log("Mongoose connection successful.");
 });
 
-// // Creates test article
-// var testArticle = new Article({
-// 	title: "Title",
-// 	body: "Body"
-// });
+// Creates test article
+var testArticle = new Article({
+	title: "Title",
+	body: "Body",
+	link: "Link"
+});
 
-// // Saves test article to the database
-// testArticle.save(function(err,doc){
-// 	if (err) {
-// 		console.log(err);
-// 	}
+// Saves test article to the database
+testArticle.save(function(err,doc){
+	if (err) {
+		console.log(err);
+	}
 
-// 	else {
-// 		console.log(doc);
-// 	}
-// });
+	else {
+		console.log(doc);
+	}
+});
 
 // Shows all articles in the database on the webpage
 app.get("/",function(req,res) {
@@ -68,12 +69,14 @@ app.get("/",function(req,res) {
 		$(".collection").each(function(i, element) {
     		var title = $(element).find(".story-heading").find("a").text();
     		var summary = $(element).find(".summary").text();
+    		var link = $(element).find(".story-heading").find("a").attr("href");
 
     		// results.push({ title: title, body: summary });
 			// Creates test article
 			var newArticle = new Article({
 				title: title,
-				body: summary
+				body: summary,
+				link: link
 			});
 
 			// Saves new article to database if unique
@@ -83,7 +86,6 @@ app.get("/",function(req,res) {
 				// }
 			});
 
-			// console.log($(element).find(".story-heading").find("a").attr("href"));
   		});
 
   		// res.json(results);

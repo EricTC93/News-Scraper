@@ -16,6 +16,13 @@ var ArticleSchema = new Schema({
 		trim: true,
 		unique: true,
 		required: true
+	},
+
+	link: {
+		type: String,
+		trim: true,
+		// unique: true,
+		// required: true
 	}
 });
 
