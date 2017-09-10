@@ -27,7 +27,8 @@ var ArticleSchema = new Schema({
 
 	scrapedAt: {
 		type: Date,
-		default: Date.now
+		// default: Date.now,
+		required: true
 	},
 
 	comments: [{

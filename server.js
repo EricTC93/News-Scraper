@@ -45,7 +45,8 @@ app.set("view engine", "handlebars");
 // var testArticle = new Article({
 // 	title: "Title",
 // 	summary: "Summary",
-// 	link: "Link"
+// 	link: "Link",
+// 	scrapedAt: Date.now()
 // });
 
 // // Saves test article to the database
@@ -84,7 +85,7 @@ app.set("view engine", "handlebars");
 app.get("/",function(req,res) {
 	// res.send("Testing");
 
-	Article.find({}).populate("comments").exec(function(err,found){
+	Article.find({}).sort({scrapedAt: -1}).populate("comments").exec(function(err,found){
 
 		if (err) {
 			console.log(err);
@@ -133,6 +134,8 @@ app.get("/refresh",function(req,res) {
 
 		// // console.log(results[0]);
 
+		var date = Date.now();
+
 		$(".collection").each(function(i, element) {
     		var title = $(element).find(".story-heading").find("a").text();
     		var summary = $(element).find(".summary").text();
@@ -143,7 +146,8 @@ app.get("/refresh",function(req,res) {
 			var newArticle = new Article({
 				title: title,
 				summary: summary,
-				link: link
+				link: link,
+				scrapedAt: date
 			});
 
 			// Saves new article to database if unique
