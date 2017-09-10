@@ -22,7 +22,7 @@ var ArticleSchema = new Schema({
 		type: String,
 		trim: true,
 		// unique: true,
-		// required: true
+		required: true
 	}
 });
 

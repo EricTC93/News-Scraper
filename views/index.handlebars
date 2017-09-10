@@ -1,10 +1,10 @@
 <div class="container">
 	{{#each articles}}
 	<div class="row text-center border">
-		<p><strong>{{this.title}}</strong></p>
+		<p><strong><a target="_blank" href="{{this.link}}">{{this.title}}</a></strong></p>
 		<p>{{this.summary}}</p>
 		<div class="form-group">
-			<form action="/{{this._id}}?_method=PUT" method="POST">
+			<form action="/addComment/{{this._id}}" method="POST">
 				<input type="text" class="form-control" name="newComment">
 				<button class="btn btn-primary">Add Comment</button>
 			</form>
