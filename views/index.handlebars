@@ -1,0 +1,14 @@
+<div class="container">
+	{{#each articles}}
+	<div class="row text-center border">
+		<p><strong>{{this.title}}</strong></p>
+		<p>{{this.summary}}</p>
+		<div class="form-group">
+			<form action="/{{this._id}}?_method=PUT" method="POST">
+				<input type="text" class="form-control" name="newComment">
+				<button class="btn btn-primary">Add Comment</button>
+			</form>
+		</div>
+	</div>
+	{{/each}}
+</div>

@@ -2,6 +2,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
+var methodOverride = require("method-override");
 
 var request = require("request");
 var cheerio = require("cheerio");
@@ -13,6 +14,10 @@ mongoose.Promise = Promise;
 
 // Initialize Express
 var app = express();
+
+app.use(express.static("public"));
+
+app.use(methodOverride("_method"));
 
 app.use(bodyParser.urlencoded({
 	extended: false
@@ -29,6 +34,11 @@ db.on("error", function(err) {
 db.once("open", function() {
 	console.log("Mongoose connection successful.");
 });
+
+// Handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // // Creates test article
 // var testArticle = new Article({
@@ -49,7 +59,23 @@ db.once("open", function() {
 // });
 
 app.get("/",function(req,res) {
-	res.send("Testing");
+	// res.send("Testing");
+
+	Article.find({},function(err,found){
+
+		if (err) {
+			console.log(err);
+		}
+
+		else {
+
+			var handleBarObj = {
+				articles: found
+			};
+
+			res.render("index",handleBarObj);
+		}
+	});
 });
 
 // Shows all articles in the database on the webpage
@@ -89,11 +115,11 @@ app.get("/refresh",function(req,res) {
     		var summary = $(element).find(".summary").text();
     		var link = $(element).find(".story-heading").find("a").attr("href");
 
-    		// results.push({ title: title, body: summary });
+    		// results.push({ title: title, summary: summary });
 			// Creates test article
 			var newArticle = new Article({
 				title: title,
-				body: summary,
+				summary: summary,
 				link: link
 			});
 
