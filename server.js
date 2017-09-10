@@ -30,26 +30,44 @@ db.once("open", function() {
 	console.log("Mongoose connection successful.");
 });
 
-// Creates test article
-var testArticle = new Article({
-	title: "Title",
-	body: "Body",
-	link: "Link"
-});
+// // Creates test article
+// var testArticle = new Article({
+// 	title: "Title",
+// 	body: "Body",
+// 	link: "Link"
+// });
 
-// Saves test article to the database
-testArticle.save(function(err,doc){
-	if (err) {
-		console.log(err);
-	}
+// // Saves test article to the database
+// testArticle.save(function(err,doc){
+// 	if (err) {
+// 		console.log(err);
+// 	}
 
-	else {
-		console.log(doc);
-	}
+// 	else {
+// 		console.log(doc);
+// 	}
+// });
+
+app.get("/",function(req,res) {
+	res.send("Testing");
 });
 
 // Shows all articles in the database on the webpage
-app.get("/",function(req,res) {
+app.get("/api/articles",function(req,res) {
+
+	Article.find({},function(err,found){
+
+		if (err) {
+			console.log(err);
+		}
+
+		else {
+			res.json(found);
+		}
+	});
+});
+
+app.get("/refresh",function(req,res) {
 
 	request("https://www.nytimes.com/", function(err,response,html){
 		var $ = cheerio.load(html);
@@ -88,17 +106,8 @@ app.get("/",function(req,res) {
 
   		});
 
-  		// res.json(results);
-	});
+  		res.redirect("/");
 
-	Article.find({},function(err,found){
-		if (err) {
-			console.log(err);
-		}
-
-		else {
-			res.json(found);
-		}
 	});
 
 });
