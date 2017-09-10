@@ -41,12 +41,12 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Creates test article
-var testArticle = new Article({
-	title: "Title",
-	summary: "Summary",
-	link: "Link"
-});
+// // Creates test article
+// var testArticle = new Article({
+// 	title: "Title",
+// 	summary: "Summary",
+// 	link: "Link"
+// });
 
 // // Saves test article to the database
 // testArticle.save(function(err,doc){
@@ -60,7 +60,7 @@ var testArticle = new Article({
 // });
 
 // // Creates test comment
-// var newComment = new Comment({body:"body"});
+// var newComment = new Comment({body:"comment"});
 
 // newComment.save(function(err,doc){
 // 	if (err) {
@@ -159,6 +159,35 @@ app.get("/refresh",function(req,res) {
 
 	});
 
+});
+
+app.post("/addComment/:_id", function(req,res){
+	// console.log(req.body);
+	// console.log(req.params._id);
+
+	// Creates comment
+	var newComment = new Comment(req.body);
+
+	newComment.save(function(err,doc){
+		if (err) {
+			console.log(err);
+			res.redirect("/");
+		}
+
+		else {
+			Article.findOneAndUpdate({"_id":req.params._id},{ $push: {"comments":doc._id}}, 
+				function(nextErr, newDoc){
+					if (nextErr) {
+						console.log(nextErr);
+					}
+
+					else {
+						console.log(doc);
+						res.redirect("/");
+					}
+				});
+		}
+	});
 });
 
 // Runs app on port 3000

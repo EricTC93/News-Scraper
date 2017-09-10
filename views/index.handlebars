@@ -1,11 +1,28 @@
 <div class="container">
+
+	<div class="jumbotron text-center">
+		<h1>News Scraper</h1>
+		<div class="form-group">
+			<form action="/refresh" method="GET">
+				<button class="btn btn-primary">Refresh</button>
+			</form>
+		</div>
+	</div>
+
 	{{#each articles}}
-	<div class="row text-center border">
-		<p><strong><a target="_blank" href="{{this.link}}">{{this.title}}</a></strong></p>
-		<p>{{this.summary}}</p>
+	<div class="row text-center">
+
+		<p class="title"><strong><a target="_blank" href="{{this.link}}">{{this.title}}</a></strong></p>
+
+		<p class="summary">{{this.summary}}</p>
+
+		{{#each this.comments}}
+		<p class="comment">{{this.body}}</p>
+		{{/each}}
+
 		<div class="form-group">
 			<form action="/addComment/{{this._id}}" method="POST">
-				<input type="text" class="form-control" name="newComment">
+				<input type="text" class="form-control" name="body">
 				<button class="btn btn-primary">Add Comment</button>
 			</form>
 		</div>
