@@ -9,6 +9,7 @@ var cheerio = require("cheerio");
 
 // Models
 var Article = require("./models/Article.js");
+var Comment = require("./models/Comment.js");
 
 mongoose.Promise = Promise;
 
@@ -40,12 +41,12 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// // Creates test article
-// var testArticle = new Article({
-// 	title: "Title",
-// 	body: "Body",
-// 	link: "Link"
-// });
+// Creates test article
+var testArticle = new Article({
+	title: "Title",
+	summary: "Summary",
+	link: "Link"
+});
 
 // // Saves test article to the database
 // testArticle.save(function(err,doc){
@@ -58,10 +59,32 @@ app.set("view engine", "handlebars");
 // 	}
 // });
 
+// // Creates test comment
+// var newComment = new Comment({body:"body"});
+
+// newComment.save(function(err,doc){
+// 	if (err) {
+// 		console.log(err);
+// 	}
+
+// 	else {
+// 		Article.findOneAndUpdate({"_id":"59b5b14345eabc138022d3f5"},{ $push: {"comments":doc._id}}, 
+// 			function(nextErr, newDoc){
+// 				if (nextErr) {
+// 					console.log(nextErr);
+// 				}
+
+// 				else {
+// 					console.log(newDoc);
+// 				}
+// 			});
+// 	}
+// });
+
 app.get("/",function(req,res) {
 	// res.send("Testing");
 
-	Article.find({},function(err,found){
+	Article.find({}).populate("comments").exec(function(err,found){
 
 		if (err) {
 			console.log(err);
@@ -81,7 +104,7 @@ app.get("/",function(req,res) {
 // Shows all articles in the database on the webpage
 app.get("/api/articles",function(req,res) {
 
-	Article.find({},function(err,found){
+	Article.find({}).populate("comments").exec(function(err,found){
 
 		if (err) {
 			console.log(err);
