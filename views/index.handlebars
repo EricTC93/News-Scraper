@@ -17,13 +17,13 @@
 		<p class="summary">{{this.summary}}</p>
 
 		{{#each this.comments}}
-		<p class="comment">{{this.body}}</p>
+		<p class="comment text-left">{{this.body}}</p>
 		{{/each}}
 
 		<div class="form-group">
 			<form action="/addComment/{{this._id}}" method="POST">
 				<input type="text" class="form-control" name="body">
-				<button class="btn btn-primary">Add Comment</button>
+				<button class="btn btn-primary addComment">Add Comment</button>
 			</form>
 		</div>
 	</div>

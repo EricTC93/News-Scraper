@@ -1,0 +1,21 @@
+.row {
+	border: 2px solid black;
+	margin-bottom: 20px;
+	padding: 10px;
+}
+
+input {
+	margin-top: 20px;
+}
+
+.comment {
+	padding-left: 40px;
+	padding-right: 40px;
+	margin-left: 40px;
+	margin-right: 40px;
+	border: 1px solid black;
+}
+
+.addComment {
+	margin-top: 20px;
+}

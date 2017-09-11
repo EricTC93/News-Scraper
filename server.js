@@ -186,7 +186,7 @@ app.post("/addComment/:_id", function(req,res){
 					}
 
 					else {
-						console.log(doc);
+						// console.log(doc);
 						res.redirect("/");
 					}
 				});
