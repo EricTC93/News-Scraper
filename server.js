@@ -42,50 +42,10 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// // Creates test article
-// var testArticle = new Article({
-// 	title: "Title",
-// 	summary: "Summary",
-// 	link: "Link",
-// 	scrapedAt: Date.now()
-// });
-
-// // Saves test article to the database
-// testArticle.save(function(err,doc){
-// 	if (err) {
-// 		console.log(err);
-// 	}
-
-// 	else {
-// 		console.log(doc);
-// 	}
-// });
-
-// // Creates test comment
-// var newComment = new Comment({body:"comment"});
-
-// newComment.save(function(err,doc){
-// 	if (err) {
-// 		console.log(err);
-// 	}
-
-// 	else {
-// 		Article.findOneAndUpdate({"_id":"59b5b14345eabc138022d3f5"},{ $push: {"comments":doc._id}}, 
-// 			function(nextErr, newDoc){
-// 				if (nextErr) {
-// 					console.log(nextErr);
-// 				}
-
-// 				else {
-// 					console.log(newDoc);
-// 				}
-// 			});
-// 	}
-// });
-
+// Displays articles and comments stored in the database
 app.get("/",function(req,res) {
-	// res.send("Testing");
 
+	// Sorts by time scraped
 	Article.find({}).sort({scrapedAt: -1}).populate("comments").exec(function(err,found){
 
 		if (err) {
@@ -103,7 +63,7 @@ app.get("/",function(req,res) {
 	});
 });
 
-// Shows all articles in the database on the webpage
+// Shows all articles in the database
 app.get("/api/articles",function(req,res) {
 
 	Article.find({}).populate("comments").exec(function(err,found){
@@ -118,22 +78,13 @@ app.get("/api/articles",function(req,res) {
 	});
 });
 
+// Retrieves new articles form the nyt website
 app.get("/refresh",function(req,res) {
 
 	request("https://www.nytimes.com/", function(err,response,html){
 		var $ = cheerio.load(html);
 
 		var results = [];
-
-		// $(".collection .story-heading > a").each(function(i,element) {
-		// 	// results.push($(element).children(".story-heading").children("a").attr("href"));
-		// 	// results.push(element);
-
-		// 	console.log(element.attr("text"));
-		// 	// console.log(element);
-		// });
-
-		// // console.log(results[0]);
 
 		var date = Date.now();
 
@@ -142,8 +93,6 @@ app.get("/refresh",function(req,res) {
     		var summary = $(element).find(".summary").text();
     		var link = $(element).find(".story-heading").find("a").attr("href");
 
-    		// results.push({ title: title, summary: summary });
-			// Creates test article
 			var newArticle = new Article({
 				title: title,
 				summary: summary,
@@ -167,9 +116,7 @@ app.get("/refresh",function(req,res) {
 });
 
 app.post("/addComment/:_id", function(req,res){
-	// console.log(req.body);
-	// console.log(req.params._id);
-
+	
 	// Creates comment
 	var newComment = new Comment(req.body);
 
