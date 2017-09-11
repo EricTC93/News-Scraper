@@ -13,6 +13,12 @@ var CommentSchema = new Schema({
 	createdAt: {
 		type: Date,
 		default: Date.now
+	},
+
+	author: {
+		type: String,
+		trim: true,
+		required: true
 	}
 });
 

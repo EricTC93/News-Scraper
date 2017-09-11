@@ -17,11 +17,19 @@
 		<p class="summary">{{this.summary}}</p>
 
 		{{#each this.comments}}
-		<p class="comment text-left">{{this.body}}</p>
+		<div class="comment">
+			<p class="commentBody text-left">{{this.body}}</p>
+			<p class="author">by {{this.author}} at <span class="dateString">{{this.createdAt}}</span></p>
+		</div>
 		{{/each}}
 
 		<div class="form-group">
 			<form action="/addComment/{{this._id}}" method="POST">
+
+				<label for="author" class="pull-left">Author</label>
+				<input type="text" class="form-control" name="author">
+
+				<label for="body" class="pull-left">Comment</label>
 				<input type="text" class="form-control" name="body">
 				<button class="btn btn-primary addComment">Add Comment</button>
 			</form>
@@ -29,3 +37,7 @@
 	</div>
 	{{/each}}
 </div>
+
+<script>
+
+</script>
