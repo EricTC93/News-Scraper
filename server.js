@@ -25,8 +25,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Database Config
-mongoose.connect("mongodb://localhost/newsScraper");
-// mongoose.connect("mongodb://heroku_8sgpg11x:6p6k8ecmfvnj6smbq6a0rahurg@ds115738.mlab.com:15738/heroku_8sgpg11x");
+// mongoose.connect("mongodb://localhost/newsScraper");
+mongoose.connect("mongodb://heroku_8sgpg11x:6p6k8ecmfvnj6smbq6a0rahurg@ds115738.mlab.com:15738/heroku_8sgpg11x");
 var db = mongoose.connection;
 
 db.on("error", function(err) {
