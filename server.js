@@ -46,27 +46,6 @@ app.set("view engine", "handlebars");
 // Displays articles and comments stored in the database
 app.get("/",function(req,res) {
 
-	// Sorts by time scraped
-	Article.find({}).sort({scrapedAt: -1}).populate("comments").exec(function(err,found){
-
-		if (err) {
-			console.log(err);
-		}
-
-		else {
-
-			var handleBarObj = {
-				articles: found
-			};
-
-			res.render("index",handleBarObj);
-		}
-	});
-});
-
-// Shows all articles in the database
-app.get("/api/articles",function(req,res) {
-
 	request("https://www.nytimes.com/", function(err,response,html){
 		var $ = cheerio.load(html);
 
@@ -95,17 +74,37 @@ app.get("/api/articles",function(req,res) {
 
   		});
 
-		Article.find({}).populate("comments").exec(function(err,found){
+		// Sorts by time scraped
+		Article.find({}).sort({scrapedAt: -1}).populate("comments").exec(function(err,found){
 
 			if (err) {
 				console.log(err);
 			}
 
 			else {
-				res.json(found);
+
+				var handleBarObj = {
+					articles: found
+				};
+
+				res.render("index",handleBarObj);
 			}
 		});
+	});	
+});
 
+// Shows all articles in the database
+app.get("/api/articles",function(req,res) {
+
+	Article.find({}).populate("comments").exec(function(err,found){
+
+		if (err) {
+			console.log(err);
+		}
+
+		else {
+			res.json(found);
+		}
 	});
 });
 
