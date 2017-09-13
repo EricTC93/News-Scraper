@@ -15,6 +15,7 @@ mongoose.Promise = Promise;
 
 // Initialize Express
 var app = express();
+var PORT = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 
@@ -142,7 +143,7 @@ app.post("/addComment/:_id", function(req,res){
 	});
 });
 
-// Runs app on port 3000
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+// Runs app on defined PORT
+app.listen(PORT, function() {
+  console.log("App running on port " + PORT + "!");
 });
