@@ -67,15 +67,45 @@ app.get("/",function(req,res) {
 // Shows all articles in the database
 app.get("/api/articles",function(req,res) {
 
-	Article.find({}).populate("comments").exec(function(err,found){
+	request("https://www.nytimes.com/", function(err,response,html){
+		var $ = cheerio.load(html);
 
-		if (err) {
-			console.log(err);
-		}
+		var results = [];
 
-		else {
-			res.json(found);
-		}
+		var date = Date.now();
+
+		$(".collection").each(function(i, element) {
+    		var title = $(element).find(".story-heading").find("a").text();
+    		var summary = $(element).find(".summary").text();
+    		var link = $(element).find(".story-heading").find("a").attr("href");
+
+			var newArticle = new Article({
+				title: title,
+				summary: summary,
+				link: link,
+				scrapedAt: date
+			});
+
+			// Saves new article to database if unique
+			newArticle.save(function(err,doc){
+				// if (err) {
+				// 	console.log(err);
+				// }
+			});
+
+  		});
+
+		Article.find({}).populate("comments").exec(function(err,found){
+
+			if (err) {
+				console.log(err);
+			}
+
+			else {
+				res.json(found);
+			}
+		});
+
 	});
 });
 
