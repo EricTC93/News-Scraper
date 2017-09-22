@@ -26,8 +26,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Database Config
-// mongoose.connect("mongodb://localhost/newsScraper");
-mongoose.connect("mongodb://heroku_8sgpg11x:6p6k8ecmfvnj6smbq6a0rahurg@ds115738.mlab.com:15738/heroku_8sgpg11x");
+mongoose.connect("mongodb://localhost/newsScraper");
+// mongoose.connect("mongodb://heroku_8sgpg11x:6p6k8ecmfvnj6smbq6a0rahurg@ds115738.mlab.com:15738/heroku_8sgpg11x");
 var db = mongoose.connection;
 
 db.on("error", function(err) {
@@ -75,7 +75,7 @@ app.get("/",function(req,res) {
   		});
 
 		// Sorts by time scraped
-		Article.find({}).sort({scrapedAt: -1}).populate("comments").exec(function(err,found){
+		Article.find({}).sort({scrapedAt: -1}).limit(20).populate("comments").exec(function(err,found){
 
 			if (err) {
 				console.log(err);
@@ -111,37 +111,39 @@ app.get("/api/articles",function(req,res) {
 // Retrieves new articles form the nyt website
 app.get("/refresh",function(req,res) {
 
-	request("https://www.nytimes.com/", function(err,response,html){
-		var $ = cheerio.load(html);
+	// request("https://www.nytimes.com/", function(err,response,html){
+	// 	var $ = cheerio.load(html);
 
-		var results = [];
+	// 	var results = [];
 
-		var date = Date.now();
+	// 	var date = Date.now();
 
-		$(".collection").each(function(i, element) {
-    		var title = $(element).find(".story-heading").find("a").text();
-    		var summary = $(element).find(".summary").text();
-    		var link = $(element).find(".story-heading").find("a").attr("href");
+	// 	$(".collection").each(function(i, element) {
+ //    		var title = $(element).find(".story-heading").find("a").text();
+ //    		var summary = $(element).find(".summary").text();
+ //    		var link = $(element).find(".story-heading").find("a").attr("href");
 
-			var newArticle = new Article({
-				title: title,
-				summary: summary,
-				link: link,
-				scrapedAt: date
-			});
+	// 		var newArticle = new Article({
+	// 			title: title,
+	// 			summary: summary,
+	// 			link: link,
+	// 			scrapedAt: date
+	// 		});
 
-			// Saves new article to database if unique
-			newArticle.save(function(err,doc){
-				// if (err) {
-				// 	console.log(err);
-				// }
-			});
+	// 		// Saves new article to database if unique
+	// 		newArticle.save(function(err,doc){
+	// 			// if (err) {
+	// 			// 	console.log(err);
+	// 			// }
+	// 		});
 
-  		});
+ //  		});
 
-  		res.redirect("/");
+ //  		res.redirect("/");
 
-	});
+	// });
+
+	res.redirect("/");
 
 });
 

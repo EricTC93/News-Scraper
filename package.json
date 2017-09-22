@@ -19,13 +19,13 @@
   },
   "homepage": "https://github.com/YETC7/News-Scraper#readme",
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.1",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
     "method-override": "^2.3.9",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.11.10",
+    "mongoose": "^4.11.11",
     "request": "^2.81.0"
   }
 }
