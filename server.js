@@ -67,9 +67,9 @@ app.get("/",function(req,res) {
 
 			// Saves new article to database if unique
 			newArticle.save(function(err,doc){
-				// if (err) {
-				// 	console.log(err);
-				// }
+				if (err) {
+					console.log(err);
+				}
 			});
 
   		});
@@ -111,38 +111,6 @@ app.get("/api/articles",function(req,res) {
 // Retrieves new articles form the nyt website
 app.get("/refresh",function(req,res) {
 
-	// request("https://www.nytimes.com/", function(err,response,html){
-	// 	var $ = cheerio.load(html);
-
-	// 	var results = [];
-
-	// 	var date = Date.now();
-
-	// 	$(".collection").each(function(i, element) {
- //    		var title = $(element).find(".story-heading").find("a").text();
- //    		var summary = $(element).find(".summary").text();
- //    		var link = $(element).find(".story-heading").find("a").attr("href");
-
-	// 		var newArticle = new Article({
-	// 			title: title,
-	// 			summary: summary,
-	// 			link: link,
-	// 			scrapedAt: date
-	// 		});
-
-	// 		// Saves new article to database if unique
-	// 		newArticle.save(function(err,doc){
-	// 			// if (err) {
-	// 			// 	console.log(err);
-	// 			// }
-	// 		});
-
- //  		});
-
- //  		res.redirect("/");
-
-	// });
-
 	res.redirect("/");
 
 });
@@ -166,7 +134,6 @@ app.post("/addComment/:_id", function(req,res){
 					}
 
 					else {
-						// console.log(doc);
 						res.redirect("/");
 					}
 				});
